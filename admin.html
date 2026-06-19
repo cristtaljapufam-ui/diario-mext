@@ -5,7 +5,7 @@
     <title>Painel Administrativo</title>
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        #form-container { display: none; } /* Escondido por padrão */
+        #form-container { display: none; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -26,7 +26,7 @@
     <script>
         function verificarSenha() {
             const senha = document.getElementById('senha').value;
-            if (senha === "92053761") { // Troque por uma senha sua
+            if (senha === "92053761") {
                 document.getElementById('login-box').style.display = 'none';
                 document.getElementById('form-container').style.display = 'block';
             } else {
@@ -34,8 +34,33 @@
             }
         }
 
-        function salvarEstudo() {
-            // ... (o mesmo fetch que você já tem)
+        async function salvarEstudo() {
+            const data = document.getElementById('data').value;
+            const conteudo = document.getElementById('conteudo').value;
+            const nivel = document.getElementById('nivel').value;
+
+            const SUPABASE_URL = "https://doakqltmqmsmwjdupssk.supabase.co";
+            const SUPABASE_KEY = "sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB";
+
+            // Envio sem a linha Authorization (que estava causando conflito)
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/estudos`, {
+                method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify({ data, conteudo, nivel })
+            });
+
+            if (response.ok) {
+                alert("Sucesso! Registro adicionado.");
+                window.location.href = "diario.html";
+            } else {
+                const errorData = await response.json();
+                console.error(errorData);
+                alert("Erro ao salvar. Verifique se a política 'ALL' com 'true' está salva no Supabase.");
+            }
         }
     </script>
 </body>
