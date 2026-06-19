@@ -16,7 +16,7 @@
         </nav>
 
         <h2>Meus Estudos</h2>
-        <ul id="estudos-container"></ul>
+        <ul id="estudos-container">Carregando dados...</ul>
 
         <div style="margin-top: 30px;">
             <a href="admin.html" style="padding: 10px 20px; background: #d32f2f; color: white; text-decoration: none; border-radius: 5px;">+ Novo Registro</a>
@@ -24,16 +24,29 @@
     </main>
 
     <script>
-        fetch('http://localhost:3000/api/estudos')
-            .then(res => res.json())
-            .then(data => {
-                const container = document.getElementById('estudos-container');
-                data.forEach(item => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<strong>${item.data_estudo.split('T')[0]}</strong>: ${item.conteudo} (${item.nivel})`;
-                    container.appendChild(li);
-                });
+        const SUPABASE_URL = "https://doakqltmqmsmwjdupssk.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB";
+
+        fetch(`${SUPABASE_URL}/rest/v1/estudos?select=*`, {
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById('estudos-container');
+            container.innerHTML = ''; 
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${item.data}</strong>: ${item.conteudo} (${item.nivel})`;
+                container.appendChild(li);
             });
+        })
+        .catch(err => {
+            document.getElementById('estudos-container').innerHTML = "Erro ao carregar dados.";
+            console.error(err);
+        });
     </script>
 </body>
 </html>
