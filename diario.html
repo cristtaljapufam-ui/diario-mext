@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Diário de Estudos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <img src="sakura.webp" class="sakura-deco sakura-topo" alt="Sakura">
+    <img src="sakura.webp" class="sakura-deco sakura-baixo" alt="Sakura">
+
+    <main class="container">
+        <nav class="menu-diario">
+            <a href="index.html">Início</a>
+            <a href="diario.html">Diário de Estudos</a>
+        </nav>
+
+        <h2>Meus Estudos</h2>
+        <ul id="estudos-container"></ul>
+
+        <div style="margin-top: 30px;">
+            <a href="admin.html" style="padding: 10px 20px; background: #d32f2f; color: white; text-decoration: none; border-radius: 5px;">+ Novo Registro</a>
+        </div>
+    </main>
+
+    <script>
+        fetch('http://localhost:3000/api/estudos')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('estudos-container');
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${item.data_estudo.split('T')[0]}</strong>: ${item.conteudo} (${item.nivel})`;
+                    container.appendChild(li);
+                });
+            });
+    </script>
+</body>
+</html>

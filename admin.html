@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Administrativo</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        #form-container { display: none; } /* Escondido por padrão */
+    </style>
+</head>
+<body>
+    <div id="login-box">
+        <h2>Acesso Restrito</h2>
+        <input type="password" id="senha" placeholder="Digite a senha">
+        <button onclick="verificarSenha()">Entrar</button>
+    </div>
+
+    <div id="form-container">
+        <h2>Cadastrar Novo Estudo</h2>
+        <input type="date" id="data">
+        <input type="text" id="conteudo" placeholder="Conteúdo">
+        <input type="text" id="nivel" placeholder="Nível">
+        <button onclick="salvarEstudo()">Salvar</button>
+    </div>
+
+    <script>
+        function verificarSenha() {
+            const senha = document.getElementById('senha').value;
+            if (senha === "92053761") { // Troque por uma senha sua
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('form-container').style.display = 'block';
+            } else {
+                alert("Senha incorreta!");
+            }
+        }
+
+        function salvarEstudo() {
+            // ... (o mesmo fetch que você já tem)
+        }
+    </script>
+</body>
+</html>
