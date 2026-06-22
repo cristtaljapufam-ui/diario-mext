@@ -1,54 +1,37 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Diário de Estudos</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <img src="sakura.webp" class="sakura-deco sakura-topo" alt="Sakura">
-    <img src="sakura.webp" class="sakura-deco sakura-baixo" alt="Sakura">
+<script>
+    const SUPABASE_URL = "https://doakqltmqmsmwjdupssk.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB";
 
-    <main class="container">
-        <nav class="menu-diario">
-            <a href="index.html">Início</a>
-            <a href="diario.html">Diário de Estudos</a>
-        </nav>
-
-        <h2>Meus Estudos</h2>
-        <ul id="estudos-container">Carregando dados...</ul>
-
-        <div style="margin-top: 30px;">
-            <a href="painel.html" style="padding: 10px 20px; background: #d32f2f; color: white; text-decoration: none; border-radius: 5px;">+ Novo Registro</a>
-        </div>
-    </main>
-
-    <script>
-        const SUPABASE_URL = "https://doakqltmqmsmwjdupssk.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB";
-
-        fetch(`${SUPABASE_URL}/rest/v1/estudos?select=*`, {
-            headers: {
-                'apikey': SUPABASE_KEY,
-                'Authorization': `Bearer ${SUPABASE_KEY}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            const container = document.getElementById('estudos-container');
-            container.innerHTML = ''; 
-            data.forEach(item => {
-                const li = document.createElement('li');
-                // Notei que no seu banco você tem 'conteudo' e 'nivel'. 
-                // Se precisar exibir mais coisas, pode adicionar aqui!
-                li.innerHTML = `<strong>${item.data}</strong>: ${item.conteudo}`;
-                container.appendChild(li);
-            });
-        })
-        .catch(err => {
-            document.getElementById('estudos-container').innerHTML = "Erro ao carregar dados.";
-            console.error(err);
+    fetch(`${SUPABASE_URL}/rest/v1/estudos?select=*`, {
+        headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById('estudos-container');
+        container.innerHTML = ''; 
+        data.forEach(item => {
+            const li = document.createElement('li');
+            li.style.marginBottom = "20px";
+            li.style.borderBottom = "1px solid #ccc";
+            li.style.paddingBottom = "10px";
+            
+            // Aqui estamos montando como cada item aparece na tela
+            li.innerHTML = `
+                <strong>Data:</strong> ${item.data}<br>
+                <strong>Conteúdo:</strong> ${item.conteudo}<br>
+                <strong>Exemplo:</strong> ${item.exemplo || 'N/A'}<br>
+                <strong>Tradução:</strong> ${item.traducao || 'N/A'}<br>
+                <strong>Kanjis:</strong> ${item.kanjis_aprendidos || 'N/A'}<br>
+                ${item.foto_url ? `<img src="${item.foto_url}" style="max-width: 200px; display: block; margin-top: 5px;">` : ''}
+            `;
+            container.appendChild(li);
         });
-    </script>
-</body>
-</html>
+    })
+    .catch(err => {
+        document.getElementById('estudos-container').innerHTML = "Erro ao carregar dados.";
+        console.error(err);
+    });
+</script>
