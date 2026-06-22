@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Painel Administrativo MEXT</title>
-    <!-- Script corrigido -->
+    <!-- Carregando o Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
@@ -30,11 +30,11 @@
     </div>
 
     <script>
-        // Configuração corrigida
+        // Configuração do Supabase
         const SUPABASE_URL = "https://doakqltmqmsmwjdupssk.supabase.co";
         const SUPABASE_KEY = "sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB";
         
-        // CORREÇÃO: O objeto global é 'supabase', não 'supabase.supabase'
+        // Inicialização correta
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         function verificarSenha() {
