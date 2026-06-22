@@ -19,7 +19,7 @@
         <ul id="estudos-container">Carregando dados...</ul>
 
         <div style="margin-top: 30px;">
-            <a href="admin.html" style="padding: 10px 20px; background: #d32f2f; color: white; text-decoration: none; border-radius: 5px;">+ Novo Registro</a>
+            <a href="painel.html" style="padding: 10px 20px; background: #d32f2f; color: white; text-decoration: none; border-radius: 5px;">+ Novo Registro</a>
         </div>
     </main>
 
@@ -39,7 +39,9 @@
             container.innerHTML = ''; 
             data.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.data}</strong>: ${item.conteudo} (${item.nivel})`;
+                // Notei que no seu banco você tem 'conteudo' e 'nivel'. 
+                // Se precisar exibir mais coisas, pode adicionar aqui!
+                li.innerHTML = `<strong>${item.data}</strong>: ${item.conteudo}`;
                 container.appendChild(li);
             });
         })
