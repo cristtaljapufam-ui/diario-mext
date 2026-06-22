@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Painel Administrativo MEXT</title>
-    <!-- Carregando o Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         #form-container { display: none; margin-top: 20px; width: 300px; }
@@ -15,67 +13,33 @@
     <div id="login-box">
         <h2>Acesso Restrito</h2>
         <input type="password" id="senha" placeholder="Digite a senha">
-        <button onclick="verificarSenha()">Entrar</button>
+        <button id="btnEntrar">Entrar</button>
     </div>
 
     <div id="form-container">
         <h2>Cadastrar Estudo</h2>
         <input type="date" id="data">
         <input type="text" id="conteudo" placeholder="Conteúdo">
-        <input type="text" id="exemplo" placeholder="Exemplo">
-        <input type="text" id="traducao" placeholder="Tradução">
-        <input type="text" id="kanjis" placeholder="Kanjis Aprendidos">
-        <input type="file" id="fileInput" accept="image/*">
-        <button onclick="salvarEstudo()">Salvar Registro</button>
+        <button onclick="alert('Funciona!')">Testar</button>
     </div>
 
     <script>
-        // Configuração do Supabase
-        const SUPABASE_URL = "https://doakqltmqmsmwjdupssk.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB";
-        
-        // Inicialização correta
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        function verificarSenha() {
-            const senha = document.getElementById('senha').value;
-            if (senha === "92053761") {
-                document.getElementById('login-box').style.display = 'none';
-                document.getElementById('form-container').style.display = 'block';
-            } else {
-                alert("Senha incorreta!");
-            }
-        }
-
-        async function salvarEstudo() {
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
-            let foto_url = "";
-
-            if (file) {
-                const fileName = `${Date.now()}_${file.name}`;
-                const { error: uploadError } = await supabase.storage
-                    .from('estudos')
-                    .upload(fileName, file);
+        // Tenta rodar a lógica apenas quando a página carregar totalmente
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnEntrar = document.getElementById('btnEntrar');
+            
+            btnEntrar.addEventListener('click', function() {
+                const senha = document.getElementById('senha').value;
+                console.log("Tentando entrar com:", senha);
                 
-                if (uploadError) { alert("Erro ao subir foto: " + uploadError.message); return; }
-                
-                const { data } = supabase.storage.from('estudos').getPublicUrl(fileName);
-                foto_url = data.publicUrl;
-            }
-
-            const { error } = await supabase.from('estudos').insert([{
-                data: document.getElementById('data').value,
-                conteudo: document.getElementById('conteudo').value,
-                exemplo: document.getElementById('exemplo').value,
-                traducao: document.getElementById('traducao').value,
-                kanjis_aprendidos: document.getElementById('kanjis').value,
-                foto_url: foto_url
-            }]);
-
-            if (error) { alert("Erro ao salvar: " + error.message); }
-            else { alert("Sucesso!"); window.location.href = "diario.html"; }
-        }
+                if (senha === "92053761") {
+                    document.getElementById('login-box').style.display = 'none';
+                    document.getElementById('form-container').style.display = 'block';
+                } else {
+                    alert("Senha incorreta!");
+                }
+            });
+        });
     </script>
 </body>
 </html>
