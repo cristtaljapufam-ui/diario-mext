@@ -2,10 +2,12 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Painel Administrativo</title>
+    <title>Painel Administrativo MEXT</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        #form-container { display: none; margin-top: 20px; }
+        #form-container { display: none; margin-top: 20px; width: 300px; }
+        input, button { width: 100%; margin: 5px 0; padding: 8px; }
     </style>
 </head>
 <body>
@@ -16,14 +18,22 @@
     </div>
 
     <div id="form-container">
-        <h2>Cadastrar Novo Estudo</h2>
+        <h2>Cadastrar Estudo</h2>
         <input type="date" id="data">
         <input type="text" id="conteudo" placeholder="Conteúdo">
-        <input type="text" id="nivel" placeholder="Nível">
-        <button onclick="salvarEstudo()">Salvar</button>
+        <input type="text" id="exemplo" placeholder="Exemplo">
+        <input type="text" id="traducao" placeholder="Tradução">
+        <input type="text" id="kanjis" placeholder="Kanjis Aprendidos">
+        <input type="file" id="fileInput" accept="image/*">
+        <button onclick="salvarEstudo()">Salvar Registro</button>
     </div>
 
     <script>
+        // Configuração única do Supabase
+        const SUPABASE_URL = "https://doakqltmqmsmwjdupssk.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB";
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         function verificarSenha() {
             const senha = document.getElementById('senha').value;
             if (senha === "92053761") {
@@ -35,32 +45,33 @@
         }
 
         async function salvarEstudo() {
-            const data = document.getElementById('data').value;
-            const conteudo = document.getElementById('conteudo').value;
-            const nivel = document.getElementById('nivel').value;
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            let foto_url = "";
 
-            const SUPABASE_URL = "https://doakqltmqmsmwjdupssk.supabase.co";
-            const SUPABASE_KEY = "sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB";
-
-            // Envio sem a linha Authorization (que estava causando conflito)
-            const response = await fetch(`${SUPABASE_URL}/rest/v1/estudos`, {
-                method: 'POST',
-                headers: {
-                    'apikey': SUPABASE_KEY,
-                    'Content-Type': 'application/json',
-                    'Prefer': 'return=representation'
-                },
-                body: JSON.stringify({ data, conteudo, nivel })
-            });
-
-            if (response.ok) {
-                alert("Sucesso! Registro adicionado.");
-                window.location.href = "diario.html";
-            } else {
-                const errorData = await response.json();
-                console.error(errorData);
-                alert("Erro ao salvar. Verifique se a política 'ALL' com 'true' está salva no Supabase.");
+            if (file) {
+                const fileName = `${Date.now()}_${file.name}`;
+                const { error: uploadError } = await supabase.storage
+                    .from('estudos')
+                    .upload(fileName, file);
+                
+                if (uploadError) { alert("Erro ao subir foto: " + uploadError.message); return; }
+                
+                const { data } = supabase.storage.from('estudos').getPublicUrl(fileName);
+                foto_url = data.publicUrl;
             }
+
+            const { error } = await supabase.from('estudos').insert([{
+                data: document.getElementById('data').value,
+                conteudo: document.getElementById('conteudo').value,
+                exemplo: document.getElementById('exemplo').value,
+                traducao: document.getElementById('traducao').value,
+                kanjis_aprendidos: document.getElementById('kanjis').value,
+                foto_url: foto_url
+            }]);
+
+            if (error) { alert("Erro ao salvar: " + error.message); }
+            else { alert("Sucesso!"); window.location.href = "diario.html"; }
         }
     </script>
 </body>
