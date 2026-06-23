@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Projetos PIBIC | MEXT</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .container { max-width: 800px; margin: auto; padding: 20px; text-align: justify; }
+        /* Padronização absoluta para todas as imagens */
+        .img-padrao { width: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-bottom: 20px; }
+        .img-lateral-direita { float: right; margin: 0 0 20px 20px; }
+        .img-lateral-esquerda { float: left; margin: 0 20px 20px 0; }
+        
+        .box-solicitacao { background: #fdfdfd; padding: 25px; border-radius: 10px; border: 1px solid #eee; margin-top: 40px; clear: both; }
+        .box-bakhtin { margin: 30px 0; border: 2px solid #34495e; padding: 15px; border-radius: 8px; text-align: center; background: #fff; clear: both; }
+        
+        h1 { color: #2c3e50; margin-bottom: 5px; }
+        h2 { color: #34495e; border-left: 4px solid #e74c3c; padding-left: 10px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <img src="sakura.webp" class="sakura-fundo sakura-cima" alt="Sakura">
+    <img src="sakura.webp" class="sakura-fundo sakura-baixo" alt="Sakura">
+
+    <main class="container">
+        <nav class="menu-nav">
+            <a href="index.html" class="btn">Início</a>
+            <a href="diario.html" class="btn">Diário de Estudos</a>
+            <a href="projetos.html" class="btn">Projetos PIBIC</a>
+        </nav>
+
+        <h1>“O osso” de Arishima Takeo</h1>
+        <p><em>A influência da vida do autor na obra | Orientação: Prof. Leonard Christy Souza Costa e Prof. Rodrygo Yoshiyuki Tanaka</em></p>
+
+        <section class="texto-projeto">
+            <img src="arishima.jpg" class="img-padrao img-lateral-direita" alt="Arishima Takeo">
+            <p>Este projeto de pesquisa PIBIC/UFAM investiga a complexa teia entre a subjetividade de Arishima Takeo e a sua produção literária, focando no conto "O Osso" (<em>Hone</em>). A análise parte da premissa de que a obra literária, sob a ótica bakhtiniana, não é um produto estático, mas um ato responsivo e dialógico. Arishima, imerso nas contradições da Era Taisho, utiliza a literatura para refutar a racionalização excessiva de seu tempo, transpondo suas próprias crises existenciais de classe para o limiar da ficção.</p>
+            
+            <h2>A Subjetividade e o "Romance do Eu"</h2>
+            <p>O gênero <em>Shishōsetsu</em> (Romance do Eu) em Arishima não se limita à confissão autobiográfica ingênua. Através de um projeto estético consciente, o autor utiliza a introspecção como ferramenta de sondagem política. Enquanto o grupo <em>Shirakaba</em> defendia um humanismo idealista, Arishima tensiona essa visão ao inserir seus personagens em um cenário de marginalidade, onde o "Eu" literário busca, na invenção, uma realidade mais autêntica do que a vivida socialmente. Arishima não apenas narra; ele constrói um campo de força onde a consciência do autor e a voz do personagem colidem constantemente.</p>
+
+            <img src="meiji.jpg" class="img-padrao img-lateral-esquerda" alt="Era Meiji">
+            <h2>Signos, Ideologia e o Cronotopo</h2>
+            <p>A pesquisa detalha a função semiótica de elementos cotidianos em "O Osso", como o consumo do <em>Takuanzuke</em> e do <em>Sake</em>. Mais do que meros objetos, eles operam como signos de resistência à ideologia da "eficiência econômica" de Morimoto Atsukichi. Analisamos, ainda, a aplicação do conceito de <strong>cronotopo</strong> bakhtiniano, onde tempo e espaço se fundem para criar um cenário de "limiar" — o lugar de encontro entre a angústia da sobrevivência e a busca por um propósito ético e estético que desafia as estruturas impostas na obra.</p>
+
+            <div class="box-bakhtin">
+                <h4 style="margin: 0 0 10px 0; color: #34495e;">Perspectiva Bakhtiniana em "O Osso"</h4>
+                <img src="bakhtin.jpg" class="img-padrao" style="display: block; margin: 0 auto;" alt="Mikhail Bakhtin">
+                <p style="font-size: 0.9em; color: #555; margin-top: 10px;">A análise dialógica aplicada ao conto "O Osso" permite compreender a polifonia entre a biografia de Arishima e a estrutura narrativa da obra.</p>
+            </div>
+        </section>
+
+        <div class="box-solicitacao">
+            <h3>Solicitar Acesso ao PDF</h3>
+            <input type="email" id="email-solicitante" placeholder="Seu e-mail" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+            <textarea id="mensagem-solicitante" placeholder="Por que você se interessa pelo tema?" style="width: 100%; padding: 10px; margin-bottom: 10px;"></textarea>
+            <button id="btn-enviar" onclick="enviarSolicitacao()" class="btn">Enviar solicitação</button>
+            <p id="status-envio" style="display:none; color: green; font-weight: bold;">Enviado com sucesso!</p>
+        </div>
+    </main>
+
+    <script>
+        const supabase = supabase.createClient('https://doakqltmqmsmwjdupssk.supabase.co', 'sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB');
+        async function enviarSolicitacao() {
+            const email = document.getElementById('email-solicitante').value;
+            const msg = document.getElementById('mensagem-solicitante').value;
+            if (!email || !msg) { alert("Preencha os campos!"); return; }
+            const { error } = await supabase.from('interacoes_projetos').insert([{ 
+                nome_projeto: 'PIBIC UFAM - Arishima', email_solicitante: email, comentario: msg 
+            }]);
+            if (error) { alert("Erro: " + error.message); } 
+            else { document.getElementById('status-envio').style.display = 'block'; document.getElementById('btn-enviar').disabled = true; }
+        }
+    </script>
+</body>
+</html>
