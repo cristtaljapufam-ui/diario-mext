@@ -57,13 +57,35 @@
             };
 
             document.getElementById('btnSalvar').onclick = async function() {
+                const fileInput = document.getElementById('foto');
+                const file = fileInput.files[0];
+                let fotoUrl = null;
+
+                // Upload da foto antes de salvar no banco
+                if (file) {
+                    const filePath = `${Date.now()}_${file.name}`;
+                    const { error: uploadError } = await supabaseClient.storage
+                        .from('estudos')
+                        .upload(filePath, file);
+
+                    if (uploadError) {
+                        alert("Erro no upload da foto: " + uploadError.message);
+                        return;
+                    }
+                    const { data } = supabaseClient.storage.from('estudos').getPublicUrl(filePath);
+                    fotoUrl = data.publicUrl;
+                }
+
+                // Inserção no banco
                 const { error } = await supabaseClient.from('estudos').insert([{
                     data: document.getElementById('data').value,
                     conteudo: document.getElementById('conteudo').value,
                     frase: document.getElementById('frase').value,
-                    traducao: document.getElementById('traducao').value
+                    traducao: document.getElementById('traducao').value,
+                    foto_url: fotoUrl
                 }]);
-                if (error) alert("Erro: " + error.message);
+
+                if (error) alert("Erro ao salvar: " + error.message);
                 else alert("Salvo com sucesso!");
             };
         });
