@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Diário de Estudos</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" async></script>
 </head>
 <body>
     <img src="sakura.webp" class="sakura-fundo sakura-cima" alt="Sakura">
@@ -25,38 +25,60 @@
             <a href="painel.html" class="btn">+ Novo Registro</a>
         </div>
         
-        <div id="estudos-container">Carregando estudos...</div>
+        <div id="estudos-container">Iniciando...</div>
     </main>
     
     <script>
-        const supabase = supabase.createClient(
-            'https://doakqltmqmsmwjdupssk.supabase.co', 
-            'sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB'
-        );
+        function tentarCarregar() {
+            if (typeof supabase === 'undefined') {
+                setTimeout(tentarCarregar, 500);
+                return;
+            }
+            executarBusca();
+        }
 
-        async function carregarEstudos() {
-            const { data, error } = await supabase
+        async function executarBusca() {
+            const container = document.getElementById('estudos-container');
+            const client = supabase.createClient(
+                'https://doakqltmqmsmwjdupssk.supabase.co', 
+                'sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB'
+            );
+            
+            const { data, error } = await client
                 .from('estudos')
                 .select('*')
                 .order('data', { ascending: false });
 
-            const container = document.getElementById('estudos-container');
-            if (error) { container.innerHTML = 'Erro ao carregar: ' + error.message; return; }
+            if (error) {
+                container.innerHTML = "Erro crítico: " + error.message;
+                return;
+            }
 
-            container.innerHTML = data.length === 0 ? '<p>Nenhum registro encontrado.</p>' : '';
+            if (!data || data.length === 0) {
+                container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
             
             data.forEach(item => {
+                // Aqui estamos tratando os nomes das colunas
+                // Se 'foto_url' não funcionar, verifique no Supabase se o nome é exatamente esse
+                const urlImagem = item.foto_url || item.foto; 
+                
                 container.innerHTML += `
                     <div class="registro-item">
-                        <p><strong>Data:</strong> ${item.data}</p>
-                        <p><strong>Conteúdo:</strong> ${item.conteudo}</p>
-                        <p><strong>Frase:</strong> ${item.frase}</p>
-                        <p><strong>Tradução:</strong> ${item.traducao}</p>
+                        <p><strong>Data:</strong> ${item.data || ''}</p>
+                        <p><strong>Conteúdo:</strong> ${item.conteudo || ''}</p>
+                        <p><strong>Frase:</strong> ${item.frase || ''}</p>
+                        <p><strong>Tradução:</strong> ${item.traducao || ''}</p>
+                        ${urlImagem ? `<img src="${urlImagem}" alt="Foto" style="max-width: 100%; border-radius: 8px; margin-top: 10px;">` : '<p style="color:red; font-size: 12px;">(Sem foto cadastrada)</p>'}
                     </div>
                 `;
             });
         }
-        carregarEstudos();
+
+        tentarCarregar();
     </script>
 </body>
 </html>
