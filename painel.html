@@ -2,28 +2,70 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Painel</title>
+    <title>Painel de Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <div id="login-box">
-        <input type="password" id="senha" placeholder="Senha">
-        <button id="btnEntrar">Entrar</button>
-    </div>
-    <div id="form-container" style="display:none;">
-        <h2>Cadastrar Estudo</h2>
-        <input type="date" id="data">
-        <input type="text" id="conteudo" placeholder="Conteúdo">
-        <button onclick="alert('Funcionalidade em breve!')">Salvar</button>
-    </div>
+    <img src="sakura.webp" class="sakura-fundo sakura-cima" alt="Sakura">
+    <img src="sakura.webp" class="sakura-fundo sakura-baixo" alt="Sakura">
+
+    <main class="container page-painel">
+        <nav class="menu-nav">
+            <a href="index.html" class="btn">Início</a>
+            <a href="diario.html" class="btn">Diário de Estudos</a>
+        </nav>
+
+        <div id="login-box" style="text-align: center; margin-top: 50px;">
+            <h1>Acesso Restrito</h1>
+            <input type="password" id="senha" placeholder="Senha" class="input-form">
+            <button id="btnEntrar" class="btn">Entrar</button>
+            
+            <div style="margin-top: 30px;">
+                <img src="cadeado.png" alt="Senha" style="width: 150px; display: block; margin: 0 auto;">
+            </div>
+        </div>
+
+        <div id="form-container" style="display:none; text-align: center;">
+            <h1>Cadastrar Estudo</h1>
+            <input type="date" id="data" class="input-form">
+            <input type="text" id="conteudo" placeholder="Conteúdo" class="input-form">
+            <input type="text" id="frase" placeholder="Frase" class="input-form">
+            <input type="text" id="traducao" placeholder="Tradução" class="input-form">
+            
+            <label style="display:block; margin-top:10px;">Inserir Foto:</label>
+            <input type="file" id="foto" class="input-form" style="border:none;">
+            
+            <button id="btnSalvar" class="btn" style="margin-top: 20px;">Salvar Registro</button>
+        </div>
+    </main>
 
     <script>
-        document.getElementById('btnEntrar').addEventListener('click', () => {
-            if (document.getElementById('senha').value === "92053761") {
-                document.getElementById('login-box').style.display = 'none';
-                document.getElementById('form-container').style.display = 'block';
-            } else {
-                alert("Senha incorreta!");
-            }
+        window.addEventListener('load', function() {
+            const supabaseClient = supabase.createClient(
+                'https://doakqltmqmsmwjdupssk.supabase.co', 
+                'sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB'
+            );
+
+            document.getElementById('btnEntrar').onclick = function() {
+                if (document.getElementById('senha').value === "92053761") {
+                    document.getElementById('login-box').style.display = 'none';
+                    document.getElementById('form-container').style.display = 'block';
+                } else {
+                    alert("Senha incorreta!");
+                }
+            };
+
+            document.getElementById('btnSalvar').onclick = async function() {
+                const { error } = await supabaseClient.from('estudos').insert([{
+                    data: document.getElementById('data').value,
+                    conteudo: document.getElementById('conteudo').value,
+                    frase: document.getElementById('frase').value,
+                    traducao: document.getElementById('traducao').value
+                }]);
+                if (error) alert("Erro: " + error.message);
+                else alert("Salvo com sucesso!");
+            };
         });
     </script>
 </body>

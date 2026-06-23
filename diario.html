@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Diário de Estudos</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <img src="sakura.webp" class="sakura-fundo sakura-cima" alt="Sakura">
+    <img src="sakura.webp" class="sakura-fundo sakura-baixo" alt="Sakura">
+
+    <main class="container page-diario">
+        <nav class="menu-nav">
+            <a href="index.html" class="btn">Início</a>
+            <a href="diario.html" class="btn">Diário de Estudos</a>
+            <a href="index.html#objetivo" class="btn">Objetivo</a>
+            <a href="index.html#metodologia" class="btn">Metodologia</a>
+        </nav>
+
+        <img src="estudar.png" class="img-estudar" alt="Garota Estudando">
+        <h1>Diário de Estudos</h1>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+            <a href="painel.html" class="btn">+ Novo Registro</a>
+        </div>
+        
+        <div id="estudos-container">Carregando estudos...</div>
+    </main>
+    
+    <script>
+        const supabase = supabase.createClient(
+            'https://doakqltmqmsmwjdupssk.supabase.co', 
+            'sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB'
+        );
+
+        async function carregarEstudos() {
+            const { data, error } = await supabase
+                .from('estudos')
+                .select('*')
+                .order('data', { ascending: false });
+
+            const container = document.getElementById('estudos-container');
+            if (error) { container.innerHTML = 'Erro ao carregar: ' + error.message; return; }
+
+            container.innerHTML = data.length === 0 ? '<p>Nenhum registro encontrado.</p>' : '';
+            
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="registro-item">
+                        <p><strong>Data:</strong> ${item.data}</p>
+                        <p><strong>Conteúdo:</strong> ${item.conteudo}</p>
+                        <p><strong>Frase:</strong> ${item.frase}</p>
+                        <p><strong>Tradução:</strong> ${item.traducao}</p>
+                    </div>
+                `;
+            });
+        }
+        carregarEstudos();
+    </script>
+</body>
+</html>

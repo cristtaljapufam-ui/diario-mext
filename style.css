@@ -1,29 +1,51 @@
-body { margin: 0; padding: 40px 20px; font-family: 'Segoe UI', sans-serif; background-color: #fdfdfd; }
+/* --- Estilos Gerais --- */
+body { margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; background-color: #ffffff; }
+.container { max-width: 800px; margin: 0 auto; }
+.sakura-fundo { position: fixed; width: 300px; z-index: -1; opacity: 0.8; }
+.sakura-cima { top: 0; left: 0; transform: scaleX(-1); }
+.sakura-baixo { bottom: 0; right: 0; }
 
-.container { 
-    max-width: 700px; margin: 0 auto; background: #fff; padding: 30px; 
-    border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    position: relative; z-index: 10;
+/* --- Menu Unificado --- */
+.menu-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+.btn { padding: 10px 15px; background-color: #d32f2f; color: white !important; text-decoration: none; border-radius: 5px; font-weight: bold; }
+
+/* --- Estilos da Página Inicial (index) --- */
+.page-index h1, .page-index h2 { color: #d32f2f; }
+.img-fuji { width: 100%; border-radius: 10px; margin: 10px 0; display: block; }
+.img-torii { width: 60px; margin: 20px auto; display: block; }
+
+/* --- Estilos da Página de Diário (diario) --- */
+.page-diario h1 { color: #d32f2f; text-align: center; }
+.img-estudar { width: 150px; display: block; margin: 20px auto; }
+#estudos-container { margin-top: 20px; }
+
+/* Adicione isso ao final do seu style.css */
+.registro-item {
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #d32f2f; /* A linha que você pediu */
 }
 
-/* Moldura de Flores */
-.sakura-deco { position: fixed; width: 250px; z-index: 1; pointer-events: none; }
-.sakura-topo { top: 10px; right: 10px; }
-.sakura-baixo { bottom: 10px; left: 10px; transform: scaleX(-1) scaleY(-1); }
-
-/* Menu */
-.menu-diario { text-align: center; margin-bottom: 30px; }
-.menu-diario a { 
-    text-decoration: none; background-color: #d32f2f; color: white; 
-    padding: 8px 20px; margin: 0 5px; border-radius: 5px; font-weight: bold; display: inline-block;
+/* Estilo para campos de texto e senhas */
+.input-form {
+    display: block;
+    width: 300px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #fff;
+    border: 2px solid #d32f2f;
+    color: #333;
+    border-radius: 5px; /* Arredondado */
+    font-family: 'Segoe UI', sans-serif;
 }
-.menu-diario a:hover { background-color: #b71c1c; }
 
-/* Conteúdo */
-.img-fuji { width: 100%; border-radius: 10px; display: block; }
-.icone-torii { width: 80px; display: block; margin: 20px auto 10px; }
-.capa { text-align: center; }
-.nome { text-align: center; font-size: 1.1em; color: #333; }
-h1 { color: #2c3e50; font-weight: 300; text-align: center; }
-h2 { color: #d32f2f; }
-section { margin-top: 30px; padding-top: 10px; border-top: 2px solid #eee; }
+/* Força o botão a ignorar estilos de link e focar em ser clicável */
+button#btnEntrar, button#btnSalvar {
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    appearance: none; /* Remove aparência de link do navegador */
+    pointer-events: auto !important; /* Força o clique */
+    display: inline-block;
+    z-index: 999;
+}
