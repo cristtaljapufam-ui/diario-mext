@@ -1,51 +1,25 @@
-/* --- Estilos Gerais --- */
-body { margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; background-color: #ffffff; }
-.container { max-width: 800px; margin: 0 auto; }
-.sakura-fundo { position: fixed; width: 300px; z-index: -1; opacity: 0.8; }
-.sakura-cima { top: 0; left: 0; transform: scaleX(-1); }
-.sakura-baixo { bottom: 0; right: 0; }
+body { background: #eef9ff; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; } 
 
-/* --- Menu Unificado --- */
-.menu-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
-.btn { padding: 10px 15px; background-color: #d32f2f; color: white !important; text-decoration: none; border-radius: 5px; font-weight: bold; }
+/* Ondas */ 
+.waves1, .waves2, .waves3 { position: absolute; width: 110%; height: 100px; background-size: 100px 50px; background-repeat: repeat-x; } 
+.waves1 { z-index: 50; background-image: radial-gradient(circle at 50% 100%, MintCream 10%, SkyBlue 11%, SkyBlue 23%, MintCream 24%, MintCream 30%, PowderBlue 31%, PowderBlue 43%, MintCream 44%, MintCream 50%, PaleTurquoise 51%, PaleTurquoise 63%, MintCream 64%, MintCream 71%, transparent 71%, transparent); animation: waves 3s ease-in-out infinite; } 
+.waves2 { z-index: 10; background-image: radial-gradient(circle at 100% 150%, PowderBlue 24%, MintCream 25%, MintCream 28%, LightCyan 29%, LightCyan 36%, MintCream 36%, MintCream 40%, transparent 40%, transparent), radial-gradient(circle at 0 150%, PowderBlue 24%, MintCream 25%, MintCream 28%, LightCyan 29%, LightCyan 36%, MintCream 36%, MintCream 40%, transparent 40%, transparent), radial-gradient(circle at 100% 50%, MintCream 5%, MediumTurquoise 6%, MediumTurquoise 15%, MintCream 16%, MintCream 20%, PowderBlue 21%, PowderBlue 30%, MintCream 31%, MintCream 35%, LightCyan 36%, LightCyan 45%, MintCream 46%, MintCream 49%, transparent 50%, transparent), radial-gradient(circle at 0 50%, MintCream 5%, MediumTurquoise 6%, MediumTurquoise 15%, MintCream 16%, MintCream 20%, PowderBlue 21%, PowderBlue 30%, MintCream 31%, MintCream 35%, LightCyan 36%, LightCyan 45%, MintCream 46%, MintCream 49%, transparent 50%, transparent); animation: waves2 3s ease-in-out infinite; } 
+.waves3 { z-index: 100; background-image: radial-gradient(circle at 100% 150%, PowderBlue 24%, MintCream 25%, MintCream 28%, LightCyan 29%, LightCyan 36%, MintCream 36%, MintCream 40%, transparent 40%, transparent), radial-gradient(circle at 0 150%, PowderBlue 24%, MintCream 25%, MintCream 28%, LightCyan 29%, LightCyan 36%, MintCream 36%, MintCream 40%, transparent 40%, transparent); animation: waves2 3s ease-in-out infinite; } 
 
-/* --- Estilos da Página Inicial (index) --- */
-.page-index h1, .page-index h2 { color: #d32f2f; }
-.img-fuji { width: 100%; border-radius: 10px; margin: 10px 0; display: block; }
-.img-torii { width: 60px; margin: 20px auto; display: block; }
+@keyframes waves { 0% {left: 5px} 50% {left: -5px} 100% {left: 5px} } 
+@keyframes waves2 { 0% {left: -5px} 50% {left: 5px} 100% {left: -5px} } 
 
-/* --- Estilos da Página de Diário (diario) --- */
-.page-diario h1 { color: #d32f2f; text-align: center; }
-.img-estudar { width: 150px; display: block; margin: 20px auto; }
-#estudos-container { margin-top: 20px; }
+/* Layout */ 
+.hero-layout { display: flex; align-items: center; justify-content: center; gap: 60px; padding: 150px 5% 0 5%; } 
 
-/* Adicione isso ao final do seu style.css */
-.registro-item {
-    padding: 20px 0;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #d32f2f; /* A linha que você pediu */
-}
+/* Logo */ 
+.logo-large { width: 300px; height: auto; } 
+.hero-right { flex: 1; } 
+h1 { font-size: 3rem; color: #333; margin-bottom: 30px; } 
 
-/* Estilo para campos de texto e senhas */
-.input-form {
-    display: block;
-    width: 300px;
-    margin: 10px auto;
-    padding: 10px;
-    background-color: #fff;
-    border: 2px solid #d32f2f;
-    color: #333;
-    border-radius: 5px; /* Arredondado */
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* Força o botão a ignorar estilos de link e focar em ser clicável */
-button#btnEntrar, button#btnSalvar {
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    appearance: none; /* Remove aparência de link do navegador */
-    pointer-events: auto !important; /* Força o clique */
-    display: inline-block;
-    z-index: 999;
-}
+/* Menu Estilo Vidro */ 
+.menu-nav { display: flex; align-items: center; gap: 10px; padding: 15px; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: fit-content; } 
+.btn { display: flex; align-items: center; gap: 10px; padding: 15px 25px; background: transparent; color: #333; text-decoration: none; border-radius: 40px; font-weight: 600; font-size: 1.1rem; transition: 0.3s; } 
+.btn:hover { background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: scale(1.02); } 
+.icon { width: 28px; height: 28px; } 
+.arrow-btn { background: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }

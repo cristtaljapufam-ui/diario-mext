@@ -3,81 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Diário de Estudos</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" async></script>
+    <link rel="stylesheet" href="diario-style.css">
 </head>
 <body>
-    <img src="sakura.webp" class="sakura-fundo sakura-cima" alt="Sakura">
-    <img src="sakura.webp" class="sakura-fundo sakura-baixo" alt="Sakura">
+    <div class="waves1"></div><div class="waves2"></div><div class="waves3"></div>
 
-    <main class="container page-diario">
-        <nav class="menu-nav">
-            <a href="index.html" class="btn">Início</a>
-            <a href="diario.html" class="btn">Diário de Estudos</a>
-            <a href="index.html#objetivo" class="btn">Objetivo</a>
-            <a href="index.html#metodologia" class="btn">Metodologia</a>
-        </nav>
-
-        <img src="estudar.png" class="img-estudar" alt="Garota Estudando">
-        <h1>Diário de Estudos</h1>
-
-        <div style="text-align: center; margin-bottom: 20px;">
-            <a href="painel.html" class="btn">+ Novo Registro</a>
+    <header class="header-diario">
+        <div class="marca-topo">
+            <img src="logo.gif" class="logo-icon" alt="Logo">
+            <span class="nome-marca">Languages with Cristtal</span>
         </div>
+        <nav class="nav-diario">
+            <a href="index.html" class="btn-nav"><img src="inicio.png" class="icon-menu"> Início</a>
+            <a href="diario.html" class="btn-nav"><img src="diario.png" class="icon-menu"> Diário</a>
+        </nav>
+    </header>
+
+    <main class="main-diario">
+        <h1>Diário de Estudos</h1>
         
-        <div id="estudos-container">Iniciando...</div>
+        <img src="diario.gif" class="diario-gif" alt="Diário">
+        
+        <a href="painel.html" class="btn-registro">+ Novo Registro</a>
+        <div id="estudos-container" class="container-resultados">Carregando...</div>
     </main>
-    
-    <script>
-        function tentarCarregar() {
-            if (typeof supabase === 'undefined') {
-                setTimeout(tentarCarregar, 500);
-                return;
-            }
-            executarBusca();
-        }
-
-        async function executarBusca() {
-            const container = document.getElementById('estudos-container');
-            const client = supabase.createClient(
-                'https://doakqltmqmsmwjdupssk.supabase.co', 
-                'sb_publishable_sKx9ckqHw1JQd4xVnJmGtQ_zHCFoXgB'
-            );
-            
-            const { data, error } = await client
-                .from('estudos')
-                .select('*')
-                .order('data', { ascending: false });
-
-            if (error) {
-                container.innerHTML = "Erro crítico: " + error.message;
-                return;
-            }
-
-            if (!data || data.length === 0) {
-                container.innerHTML = '<p>Nenhum registro encontrado.</p>';
-                return;
-            }
-
-            container.innerHTML = '';
-            
-            data.forEach(item => {
-                // Aqui estamos tratando os nomes das colunas
-                // Se 'foto_url' não funcionar, verifique no Supabase se o nome é exatamente esse
-                const urlImagem = item.foto_url || item.foto; 
-                
-                container.innerHTML += `
-                    <div class="registro-item">
-                        <p><strong>Data:</strong> ${item.data || ''}</p>
-                        <p><strong>Conteúdo:</strong> ${item.conteudo || ''}</p>
-                        <p><strong>Frase:</strong> ${item.frase || ''}</p>
-                        <p><strong>Tradução:</strong> ${item.traducao || ''}</p>
-                        ${urlImagem ? `<img src="${urlImagem}" alt="Foto" style="max-width: 100%; border-radius: 8px; margin-top: 10px;">` : '<p style="color:red; font-size: 12px;">(Sem foto cadastrada)</p>'}
-                    </div>
-                `;
-            });
-        }
-
-        tentarCarregar();
-    </script>
 </body>
+</html>

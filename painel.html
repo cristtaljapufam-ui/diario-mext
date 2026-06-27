@@ -3,44 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Painel de Cadastro</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Usando o CSS do Diário que já tem as ondas e o estilo de vidro -->
+    <link rel="stylesheet" href="diario-style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <img src="sakura.webp" class="sakura-fundo sakura-cima" alt="Sakura">
-    <img src="sakura.webp" class="sakura-fundo sakura-baixo" alt="Sakura">
+    <!-- Ondas (design atualizado) -->
+    <div class="waves1"></div><div class="waves2"></div><div class="waves3"></div>
 
-    <main class="container page-painel">
-        <nav class="menu-nav">
-            <a href="index.html" class="btn">Início</a>
-            <a href="diario.html" class="btn">Diário de Estudos</a>
+    <header class="header-diario">
+        <div class="marca-topo">
+            <img src="logo.gif" class="logo-icon" alt="Logo">
+            <span class="nome-marca">Languages with Cristtal</span>
+        </div>
+        <nav class="nav-diario">
+            <a href="index.html" class="btn-nav"><img src="inicio.png" class="icon-menu"> Início</a>
+            <a href="diario.html" class="btn-nav"><img src="diario.png" class="icon-menu"> Diário</a>
         </nav>
+    </header>
 
-        <div id="login-box" style="text-align: center; margin-top: 50px;">
+    <main class="main-diario">
+        <!-- Login Box com estilo de vidro -->
+        <div id="login-box" class="container-resultados" style="text-align: center;">
             <h1>Acesso Restrito</h1>
             <input type="password" id="senha" placeholder="Senha" class="input-form">
-            <button id="btnEntrar" class="btn">Entrar</button>
-            
+            <button id="btnEntrar" class="btn-registro">Entrar</button>
             <div style="margin-top: 30px;">
-                <img src="cadeado.png" alt="Senha" style="width: 150px; display: block; margin: 0 auto;">
+                <img src="cadeado.png" alt="Senha" style="width: 100px; margin: 0 auto;">
             </div>
         </div>
 
-        <div id="form-container" style="display:none; text-align: center;">
+        <!-- Formulário (escondido inicialmente) -->
+        <div id="form-container" class="container-resultados" style="display:none; text-align: center;">
             <h1>Cadastrar Estudo</h1>
             <input type="date" id="data" class="input-form">
             <input type="text" id="conteudo" placeholder="Conteúdo" class="input-form">
             <input type="text" id="frase" placeholder="Frase" class="input-form">
             <input type="text" id="traducao" placeholder="Tradução" class="input-form">
-            
             <label style="display:block; margin-top:10px;">Inserir Foto:</label>
             <input type="file" id="foto" class="input-form" style="border:none;">
-            
-            <button id="btnSalvar" class="btn" style="margin-top: 20px;">Salvar Registro</button>
+            <button id="btnSalvar" class="btn-registro" style="margin-top: 20px;">Salvar Registro</button>
         </div>
     </main>
 
     <script>
+        // O seu código original (Supabase) permanece exatamente igual
         window.addEventListener('load', function() {
             const supabaseClient = supabase.createClient(
                 'https://doakqltmqmsmwjdupssk.supabase.co', 
@@ -61,7 +68,6 @@
                 const file = fileInput.files[0];
                 let fotoUrl = null;
 
-                // Upload da foto antes de salvar no banco
                 if (file) {
                     const filePath = `${Date.now()}_${file.name}`;
                     const { error: uploadError } = await supabaseClient.storage
@@ -76,7 +82,6 @@
                     fotoUrl = data.publicUrl;
                 }
 
-                // Inserção no banco
                 const { error } = await supabaseClient.from('estudos').insert([{
                     data: document.getElementById('data').value,
                     conteudo: document.getElementById('conteudo').value,
